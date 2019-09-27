@@ -26,7 +26,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 extern "C" {
 	//main functions
-	bool saveToFile(const char* filePath, float x, float y, float z)
+	ASSONE_API bool saveToFile(const char* filePath, float x, float y, float z)
 	{
 		ofstream fileStream;
 		fileStream.open(filePath); //opens file
@@ -39,7 +39,7 @@ extern "C" {
 		return false;
 	}
 
-	bool loadTheFile(const char* filePath, float& x, float& y, float& z)
+	ASSONE_API bool loadTheFile(const char* filePath, float& x, float& y, float& z)
 	{
 		string s = "";
 		ifstream fileStream;
@@ -48,7 +48,9 @@ extern "C" {
 		{
 			fileStream >> s;
 			fileStream.close();
-			sscanf(s.c_str(), "%f,%f,%f", &x, &y, &z); //reads the x y and z coordinates 
+			if (sscanf(s.c_str(), "%f,%f,%f", &x, &y, &z) != 3) {
+				return false;
+			} //reads the x y and z coordinates 
 			return true;
 		}
 		return false;
